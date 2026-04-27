@@ -2,6 +2,7 @@ import {Image, Text, TextInput, View, StyleSheet, TouchableOpacity} from "react-
 import {images} from "../../assets/ImageStorage";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {useNavigation} from "@react-navigation/native";
+import {colors, customFont, globalStyles} from "../theme/themes";
 
 export const LoginScreen = () => {
 
@@ -10,7 +11,7 @@ export const LoginScreen = () => {
     return (
         <>
             <SafeAreaProvider>
-                <SafeAreaView style={styles.container}>
+                <SafeAreaView style={styles.mainContainer}>
                     <Image source={images.brandIcon} resizeMode={"contain"}/>
 
                     <Text style={styles.pageTitle}>Login</Text>
@@ -19,12 +20,13 @@ export const LoginScreen = () => {
                         <View style={{gap: 5}}>
                             <Text style={styles.text}>Email</Text>
                             <TextInput placeholder={"Ex: fulano@gmail.com"} style={styles.input}
-                                       keyboardType={"email-address"} placeholderTextColor={"#B0BEC5"} autoCapitalize={"none"}/>
+                                       keyboardType={"email-address"} placeholderTextColor={colors.textPlaceholder}
+                                       autoCapitalize={"none"}/>
                         </View>
                         <View style={{gap: 5}}>
                             <Text style={styles.text}>Senha</Text>
                             <TextInput placeholder={"Digite sua senha"} style={styles.input}
-                                       placeholderTextColor={"#B0BEC5"}/>
+                                       placeholderTextColor={colors.textPlaceholder}/>
                         </View>
 
                         <Text style={styles.link}>Esqueci minha senha</Text>
@@ -35,7 +37,9 @@ export const LoginScreen = () => {
 
                         <View style={{flexDirection: "row", gap: 5}}>
                             <Text style={styles.text}>Ainda não possui uma conta?</Text>
-                            <Text style={styles.link} onPress={() => {navigation.navigate('signUp')}}>Inscreva-se</Text>
+                            <Text style={styles.link} onPress={() => {
+                                navigation.navigate('signUp')
+                            }}>Inscreva-se</Text>
                         </View>
                     </View>
                 </SafeAreaView>
@@ -45,50 +49,28 @@ export const LoginScreen = () => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyItems: 'center',
-        alignItems: 'center',
-        padding: 30,
-        backgroundColor: '#313131',
-        gap: 45
+    mainContainer: {
+        ...globalStyles.container
     },
     input: {
-        borderWidth: 2,
-        padding: 5,
-        borderRadius: 5,
-        borderColor: "#585858",
-        width: '100%',
-        maxWidth: 322,
-        fontSize: 12,
-        color: "#B0BEC5",
-        fontFamily: 'Lato_400Regular',
+        ...globalStyles.inputStyle
     },
     pageTitle: {
-        fontSize: 24,
-        color: '#FFFFFF',
-        fontFamily: 'Lato_700Bold',
+        ...globalStyles.pageTitleStyle
     },
     text: {
-        fontSize: 12,
-        color: '#FFFFFF',
-        fontFamily: 'Lato_400Regular'
+        ...globalStyles.normalText
     },
     link: {
-        fontSize: 12,
-        color: '#FFFFFF',
-        fontFamily: 'Lato_400Regular',
+        fontSize: customFont.sizes.small,
+        color: colors.text,
+        fontFamily: customFont.regular,
         textDecorationLine: 'underline'
     },
     button: {
-        backgroundColor: '#2962FF',
-        borderRadius: 15,
-        padding: 10
+        ...globalStyles.roundedButton
     },
     buttonText: {
-        fontSize: 15,
-        color: '#FFFFFF',
-        fontFamily: 'Lato_700Bold',
-        textAlign: 'center'
+        ...globalStyles.buttonTextStyle
     }
 })

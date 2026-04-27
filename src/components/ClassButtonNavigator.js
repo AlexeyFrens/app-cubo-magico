@@ -1,4 +1,5 @@
 import {Image, StyleSheet, TouchableOpacity, View, Text} from "react-native";
+import {colors, customFont} from "../theme/themes";
 
 export default function ClassButtonNavigator({classImage, actionNav, buttonColor, title, subtitle}) {
     return(
@@ -19,14 +20,14 @@ export default function ClassButtonNavigator({classImage, actionNav, buttonColor
 
 const checkColor = (color) => {
     switch(color) {
-        case "#0D6402":
-            return "#FFFFFF"
-        case "#FFC107":
-            return "#313131"
-        case "#FF9800":
-            return "#313131"
-        case "#9C27B0":
-            return "#FFFFFF"
+        case colors.categoryCubePieces:
+            return colors.text
+        case colors.categoryBeginner:
+            return colors.backgroundPrimary
+        case colors.categoryIntermediary:
+            return colors.backgroundPrimary
+        case colors.categoryAdvanced:
+            return colors.text
     }
 }
 
@@ -35,12 +36,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingHorizontal: 10,
         paddingVertical: 50,
-        boxShadow: [{
-            color: 'rgba(0, 0, 0, 0.5)',
-            blurRadius: 4,
-            offsetX: -4,
-            offsetY: 5
-        }],
         marginLeft: 5
     },
     content: {
@@ -56,12 +51,12 @@ const styles = StyleSheet.create({
         gap: 10
     },
     title: {
-        fontSize: 20,
+        fontSize: customFont.sizes.large,
         textAlign: "center",
-        fontFamily: 'Lato_700Bold'
+        fontFamily: customFont.bold
     },
     subtitle: {
-        fontSize: 10,
-        fontFamily: 'Lato_400Regular'
+        fontSize: customFont.sizes.smaller,
+        fontFamily: customFont.regular
     }
 })
