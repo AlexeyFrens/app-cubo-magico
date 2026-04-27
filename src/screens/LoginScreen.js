@@ -3,8 +3,6 @@ import {images} from "../../assets/ImageStorage";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {useNavigation} from "@react-navigation/native";
 
-//TODO Inserir fonte personalizada
-
 export const LoginScreen = () => {
 
     const navigation = useNavigation();
@@ -31,7 +29,7 @@ export const LoginScreen = () => {
 
                         <Text style={styles.link}>Esqueci minha senha</Text>
 
-                        <TouchableOpacity style={styles.button}>
+                        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('home')}>
                             <Text style={styles.buttonText}>Acessar</Text>
                         </TouchableOpacity>
 
@@ -51,7 +49,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyItems: 'center',
         alignItems: 'center',
-        padding: 45,
+        padding: 30,
         backgroundColor: '#313131',
         gap: 45
     },
