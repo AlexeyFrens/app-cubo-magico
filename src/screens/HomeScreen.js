@@ -63,8 +63,8 @@ const styles = StyleSheet.create({
     },
     pageTitle: {
         fontSize: 20,
-        fontWeight: "bold",
         color: '#FFFFFF',
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
+        fontFamily: 'Lato_700Bold'
     },
 })

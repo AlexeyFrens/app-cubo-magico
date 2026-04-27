@@ -61,20 +61,23 @@ const styles = StyleSheet.create({
         width: '100%',
         maxWidth: 322,
         fontSize: 12,
-        color: "#B0BEC5"
+        color: "#B0BEC5",
+        fontFamily: 'Lato_400Regular',
     },
     pageTitle: {
         fontSize: 24,
-        fontWeight: "bold",
-        color: '#FFFFFF'
+        color: '#FFFFFF',
+        fontFamily: 'Lato_700Bold',
     },
     text: {
         fontSize: 12,
-        color: '#FFFFFF'
+        color: '#FFFFFF',
+        fontFamily: 'Lato_400Regular'
     },
     link: {
         fontSize: 12,
         color: '#FFFFFF',
+        fontFamily: 'Lato_400Regular',
         textDecorationLine: 'underline'
     },
     button: {
@@ -85,7 +88,7 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 15,
         color: '#FFFFFF',
-        fontWeight: 'bold',
+        fontFamily: 'Lato_700Bold',
         textAlign: 'center'
     }
 })

@@ -57,10 +57,11 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-        fontWeight: "bold",
-        textAlign: "center"
+        textAlign: "center",
+        fontFamily: 'Lato_700Bold'
     },
     subtitle: {
-        fontSize: 10
+        fontSize: 10,
+        fontFamily: 'Lato_400Regular'
     }
 })

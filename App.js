@@ -7,10 +7,26 @@ import {CubePiecesScreen} from "./src/screens/CubePiecesScreen";
 import {BasicMovesScreen} from "./src/screens/BasicMovesScreen";
 import {BasicMethodScreen} from "./src/screens/BasicMethodScreen";
 import {AdvancedMethodScreen} from "./src/screens/AdvancedMethodScreen";
+import { useFonts, Lato_400Regular, Lato_700Bold } from '@expo-google-fonts/lato'
+import {ActivityIndicator, View} from "react-native";
 
 const Stack = createStackNavigator()
 
 export default function App() {
+
+    const [fontsLoaded] = useFonts({
+        Lato_400Regular,
+        Lato_700Bold
+    })
+
+    if (!fontsLoaded) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#313131' }}>
+                <ActivityIndicator size="large" color="#2962FF" />
+            </View>
+        );
+    }
+
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{headerShown: false}}>
