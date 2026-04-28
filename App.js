@@ -8,9 +8,89 @@ import {BasicMovesScreen} from "./src/screens/BasicMovesScreen";
 import {BasicMethodScreen} from "./src/screens/BasicMethodScreen";
 import {AdvancedMethodScreen} from "./src/screens/AdvancedMethodScreen";
 import { useFonts, Lato_400Regular, Lato_700Bold } from '@expo-google-fonts/lato'
-import {ActivityIndicator, View} from "react-native";
+import {ActivityIndicator, View, StyleSheet} from "react-native";
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {colors} from "./src/theme/themes";
+import {MaterialCommunityIcons} from "@expo/vector-icons";
+import {StopwatchScreen} from "./src/screens/StopwatchScreen";
+import {AnalyticsScreen} from "./src/screens/AnalyticsScreen";
 
 const Stack = createStackNavigator()
+const Tab = createBottomTabNavigator()
+
+const FakeComponent = () => (<View></View>)
+
+const HomeTabNavigator = () => {
+    return (
+        <Tab.Navigator
+            screenOptions={{
+                headerShown: false,
+                tabBarShowLabel: false,
+                tabBarStyle: {
+                    backgroundColor: colors.cardsAndMenus,
+                    height: 120,
+                    paddingTop: 20,
+                    borderTopWidth: 0,
+                },
+                tabBarActiveTintColor: colors.text,
+                tabBarInactiveTintColor: colors.text
+            }}
+        >
+            <Tab.Screen
+                name={"HomeTab"}
+                component={HomeScreen}
+                options={{
+                    tabBarIcon: ({ color, focused }) => (
+                        <View style={[styles.containerTab, {backgroundColor: focused ? colors.primary : 'transparent'}]}>
+                            <MaterialCommunityIcons name={"cube-outline"} size={30} color={color} />
+                        </View>
+                    )
+                }}
+            />
+            <Tab.Screen
+                name={"StopwatchTab"}
+                component={StopwatchScreen}
+                options={{
+                    tabBarIcon: ({ color, focused }) => (
+                        <View style={[styles.containerTab, {backgroundColor: focused ? colors.primary : 'transparent'}]}>
+                            <MaterialCommunityIcons name={"timer-outline"} size={30} color={color} />
+                        </View>
+                    )
+                }}
+            />
+            <Tab.Screen
+                name={"AnalyticsTab"}
+                component={AnalyticsScreen}
+                options={{
+                    tabBarIcon: ({ color, focused }) => (
+                        <View style={[styles.containerTab, {backgroundColor: focused ? colors.primary : 'transparent'}]}>
+                            <MaterialCommunityIcons name={"chart-line"} size={30} color={color} />
+                        </View>
+                    )
+                }}
+            />
+            <Tab.Screen
+                name={"LogoutTab"}
+                component={FakeComponent}
+                options={{
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="logout" size={30} color={color} />
+                    )
+                }}
+                listeners={({navigation}) => ({
+                    tabPress: (e) => {
+                        e.preventDefault()
+
+                        navigation.reset({
+                            index: 0,
+                            routes: [{ name: "login" }]
+                        })
+                    }
+                })}
+            />
+        </Tab.Navigator>
+    )
+}
 
 export default function App() {
 
@@ -32,7 +112,7 @@ export default function App() {
             <Stack.Navigator screenOptions={{headerShown: false}}>
                 <Stack.Screen name={"login"} component={LoginScreen}/>
                 <Stack.Screen name={"signUp"} component={SignUpScreen}/>
-                <Stack.Screen name={"home"} component={HomeScreen}/>
+                <Stack.Screen name={"home"} component={HomeTabNavigator}/>
                 <Stack.Screen name={"cubePieces"} component={CubePiecesScreen}/>
                 <Stack.Screen name={"basicMoves"} component={BasicMovesScreen}/>
                 <Stack.Screen name={"basicMethod"} component={BasicMethodScreen}/>
@@ -41,3 +121,13 @@ export default function App() {
         </NavigationContainer>
     );
 }
+
+const styles = StyleSheet.create({
+    containerTab: {
+        width: 50,
+        height: 50,
+        borderRadius: 10,
+        justifyContent: "center",
+        alignItems: "center",
+    }
+})
