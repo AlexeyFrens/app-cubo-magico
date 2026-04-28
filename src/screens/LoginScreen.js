@@ -31,7 +31,8 @@ export const LoginScreen = () => {
 
                         <Text style={styles.link}>Esqueci minha senha</Text>
 
-                        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('home')}>
+                        <TouchableOpacity style={styles.button}
+                                          onPress={() => navigation.reset({index: 0, routes: [{name: 'home'}]})}>
                             <Text style={styles.buttonText}>Acessar</Text>
                         </TouchableOpacity>
 
