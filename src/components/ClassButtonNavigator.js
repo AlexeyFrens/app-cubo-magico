@@ -1,5 +1,5 @@
 import {Image, StyleSheet, TouchableOpacity, View, Text} from "react-native";
-import {colors, customFont} from "../theme/themes";
+import {colors, customFont, globalStyles} from "../theme/themes";
 
 export default function ClassButtonNavigator({classImage, actionNav, buttonColor, title, subtitle}) {
     return(
@@ -33,6 +33,7 @@ const checkColor = (color) => {
 
 const styles = StyleSheet.create({
     container: {
+        ...globalStyles.defaultShadow,
         borderRadius: 10,
         paddingHorizontal: 10,
         paddingVertical: 50,
