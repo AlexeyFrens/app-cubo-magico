@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         fontFamily: customFont.bold
     },
     subtitle: {
-        fontSize: customFont.sizes.smaller,
+        fontSize: customFont.sizes.small,
         fontFamily: customFont.regular
     }
 })
