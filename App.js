@@ -14,6 +14,7 @@ import {colors} from "./src/theme/themes";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {StopwatchScreen} from "./src/screens/StopwatchScreen";
 import {AnalyticsScreen} from "./src/screens/AnalyticsScreen";
+import {AulaTemplateScreen} from "./src/screens/AulaTemplateScreen";
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -113,10 +114,11 @@ export default function App() {
                 <Stack.Screen name={"login"} component={LoginScreen}/>
                 <Stack.Screen name={"signUp"} component={SignUpScreen}/>
                 <Stack.Screen name={"home"} component={HomeTabNavigator}/>
-                <Stack.Screen name={"cubePieces"} component={CubePiecesScreen}/>
-                <Stack.Screen name={"basicMoves"} component={BasicMovesScreen}/>
-                <Stack.Screen name={"basicMethod"} component={BasicMethodScreen}/>
-                <Stack.Screen name={"advancedMethod"} component={AdvancedMethodScreen}/>
+                {/*<Stack.Screen name={"cubePieces"} component={CubePiecesScreen}/>*/}
+                {/*<Stack.Screen name={"basicMoves"} component={BasicMovesScreen}/>*/}
+                {/*<Stack.Screen name={"basicMethod"} component={BasicMethodScreen}/>*/}
+                {/*<Stack.Screen name={"advancedMethod"} component={AdvancedMethodScreen}/>*/}
+                <Stack.Screen name={"aulaScreen"} component={AulaTemplateScreen}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

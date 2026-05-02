@@ -1,4 +1,5 @@
 export const colors = {
+    backgroundOverlay: 'rgba(0, 0, 0, 0.6)',
     backgroundPrimary: '#313131',
     cardsAndMenus: '#585858',
     textPlaceholder: '#798489',
