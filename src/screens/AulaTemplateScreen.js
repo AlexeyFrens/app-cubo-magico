@@ -10,14 +10,14 @@ export const AulaTemplateScreen = ({route}) => {
 
     const navigator = useNavigation()
 
-    const {etapas} = route.params
+    const {etapas: steps} = route.params
 
     const [passoAtual, setPassoAtual] = useState(0)
 
-    const conteudoAtual = etapas[passoAtual];
+    const conteudoAtual = steps[passoAtual];
 
     const continueButton = () => {
-        if (passoAtual < etapas.length - 1) {
+        if (passoAtual < steps.length - 1) {
             setPassoAtual(passoAtual + 1)
         } else {
             navigator.goBack()
@@ -42,8 +42,8 @@ export const AulaTemplateScreen = ({route}) => {
 
                     <DropDownPicker setValue={setPassoAtual}
                                     value={passoAtual}
-                                    items={etapas.map((etapa, index) => ({
-                                        label: etapa.titulo,
+                                    items={steps.map((step, index) => ({
+                                        label: step.titulo,
                                         value: index
                                     }))}
                                     open={dropDownOpen}
@@ -55,7 +55,8 @@ export const AulaTemplateScreen = ({route}) => {
                                     tickIconStyle={{tintColor: colors.text}}
                     />
 
-                    <Image source={conteudoAtual.imagem_url} resizeMode={"contain"}/>
+                    <Image style={{width: '100%', height: 200}} source={{uri: conteudoAtual.image_url}}
+                           resizeMode={"contain"}/>
 
                     <View style={{gap: 20}}>
                         <View style={styles.classCardContainer}>
@@ -63,9 +64,9 @@ export const AulaTemplateScreen = ({route}) => {
 
                             {conteudoAtual.sequencia && conteudoAtual.sequencia.length > 0 && (
                                 <View style={styles.classScrambleContainer}>
-                                    {conteudoAtual.sequencia.map((letra, index) => (
+                                    {conteudoAtual.sequencia.map((word, index) => (
                                         <View key={index} style={styles.classScrambleBox}>
-                                            <Text style={styles.classScrambleText}>{letra}</Text>
+                                            <Text style={styles.classScrambleText}>{word}</Text>
                                         </View>
                                     ))}
                                 </View>
@@ -80,13 +81,18 @@ export const AulaTemplateScreen = ({route}) => {
                             </TouchableOpacity>
                             <TouchableOpacity style={[styles.button, styles.continueButton]} onPress={continueButton}>
                                 <Text style={[{fontWeight: 'bold'}, globalStyles.normalText]}>
-                                    {passoAtual === etapas.length - 1 ? "Finalizar" : "Continuar"}
+                                    {passoAtual === steps.length - 1 ? "Finalizar" : "Continuar"}
                                 </Text>
                             </TouchableOpacity>
                         </View>
 
                         <TouchableOpacity
-                            style={{backgroundColor: colors.primary, borderRadius: 100, padding: 10, alignSelf: 'center'}}
+                            style={{
+                                backgroundColor: colors.primary,
+                                borderRadius: 100,
+                                padding: 10,
+                                alignSelf: 'center'
+                            }}
                             onPress={() => navigator.goBack()}
                         >
                             <Image source={images.homeButton} resizeMode={"contain"}/>

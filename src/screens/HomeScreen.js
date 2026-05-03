@@ -5,6 +5,7 @@ import ClassButtonNavigator from "../components/ClassButtonNavigator";
 import {useNavigation} from "@react-navigation/native";
 import {colors, customFont, globalStyles} from "../theme/themes";
 import {useState} from "react";
+import {classService} from "../services/classService";
 
 export const HomeScreen = () => {
 
@@ -16,30 +17,15 @@ export const HomeScreen = () => {
         setIsLoading(true)
 
         try {
-            await new Promise(resolve => setTimeout(resolve, 1500))
+            const supabaseData = await classService.searchStapsByTrail(idTrilha)
 
-            const dados = [
-                {
-                    id: 1,
-                    titulo: "Centros",
-                    texto: "São as 6 peças centrais do cubo. Elas são fixas e indicam a cor da face. Por exemplo, o centro amarelo indica que a face deverá ser toda amarela.\n\nImportante lembrar que não é possível trocar os centros de lugar.",
-                    sequencia: null, // Sem botões azuis,
-                    ordem: 0,
-                    imagem_url: images.brandIcon
-                },
-                {
-                    id: 2,
-                    titulo: "F2L - Caso 1",
-                    texto: "Esse algoritmo apenas funcionará se a quina estiver com o lado branco virado para a direita e o topo da quina e o meio estiverem com cores diferentes.",
-                    sequencia: ['R', 'U', "R'"],
-                    ordem: 1,
-                    imagem_url: images.brandIcon
-                }
-            ]
+            if (!supabaseData || supabaseData.length === 0) {
+                Alert.alert("Nenhuma aula encontrada para esta trilha no momento.")
+                return
+            }
 
-            navigator.navigate('aulaScreen', {etapas: dados})
+            navigator.navigate('aulaScreen', {etapas: supabaseData})
         } catch (error) {
-            console.error("Erro ao baixar a aula:", error)
             Alert.alert("Erro ao carregar o conteúdo. Verifique sua conexão")
         } finally {
             setIsLoading(false)
