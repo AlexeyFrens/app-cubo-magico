@@ -85,5 +85,23 @@ export const globalStyles = {
         color: colors.text,
         textAlign: 'center',
         fontFamily: customFont.bold
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: colors.backgroundOverlay,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalBox: {
+        backgroundColor: colors.cardsAndMenus,
+        padding: 25,
+        borderRadius: 15,
+        alignItems: 'center',
+        gap: 15,
+    },
+    modalTitle: {
+        color: colors.text,
+        fontFamily: customFont.bold,
+        fontSize: customFont.sizes.medium,
     }
 }

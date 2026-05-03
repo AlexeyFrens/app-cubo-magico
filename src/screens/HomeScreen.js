@@ -105,21 +105,12 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
     },
     loadingOverlay: {
-        flex: 1,
-        backgroundColor: colors.backgroundOverlay,
-        justifyContent: 'center',
-        alignItems: 'center',
+        ...globalStyles.modalOverlay
     },
     loadingBox: {
-        backgroundColor: colors.cardsAndMenus,
-        padding: 25,
-        borderRadius: 15,
-        alignItems: 'center',
-        gap: 15,
+        ...globalStyles.modalBox
     },
     loadingText: {
-        color: colors.text,
-        fontFamily: customFont.bold,
-        fontSize: customFont.sizes.medium,
+        ...globalStyles.modalTitle
     }
 })

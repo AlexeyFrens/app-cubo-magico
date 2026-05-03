@@ -4,88 +4,122 @@ import {LoginScreen} from "./src/screens/LoginScreen";
 import {SignUpScreen} from "./src/screens/SignUpScreen";
 import {HomeScreen} from "./src/screens/HomeScreen";
 import {Lato_400Regular, Lato_700Bold, useFonts} from '@expo-google-fonts/lato'
-import {ActivityIndicator, StyleSheet, View} from "react-native";
+import {ActivityIndicator, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import {colors} from "./src/theme/themes";
+import {colors, globalStyles} from "./src/theme/themes";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {StopwatchScreen} from "./src/screens/StopwatchScreen";
 import {AnalyticsScreen} from "./src/screens/AnalyticsScreen";
 import {AulaTemplateScreen} from "./src/screens/AulaTemplateScreen";
+import {useState} from "react";
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
 
 const FakeComponent = () => (<View></View>)
 
-const HomeTabNavigator = () => {
-    return (
-        <Tab.Navigator
-            screenOptions={{
-                headerShown: false,
-                tabBarShowLabel: false,
-                tabBarStyle: {
-                    backgroundColor: colors.cardsAndMenus,
-                    height: 120,
-                    paddingTop: 20,
-                    borderTopWidth: 0,
-                },
-                tabBarActiveTintColor: colors.text,
-                tabBarInactiveTintColor: colors.text
-            }}
-        >
-            <Tab.Screen
-                name={"HomeTab"}
-                component={HomeScreen}
-                options={{
-                    tabBarIcon: ({ color, focused }) => (
-                        <View style={[styles.containerTab, {backgroundColor: focused ? colors.primary : 'transparent'}]}>
-                            <MaterialCommunityIcons name={"cube-outline"} size={30} color={color} />
-                        </View>
-                    )
-                }}
-            />
-            <Tab.Screen
-                name={"StopwatchTab"}
-                component={StopwatchScreen}
-                options={{
-                    tabBarIcon: ({ color, focused }) => (
-                        <View style={[styles.containerTab, {backgroundColor: focused ? colors.primary : 'transparent'}]}>
-                            <MaterialCommunityIcons name={"timer-outline"} size={30} color={color} />
-                        </View>
-                    )
-                }}
-            />
-            <Tab.Screen
-                name={"AnalyticsTab"}
-                component={AnalyticsScreen}
-                options={{
-                    tabBarIcon: ({ color, focused }) => (
-                        <View style={[styles.containerTab, {backgroundColor: focused ? colors.primary : 'transparent'}]}>
-                            <MaterialCommunityIcons name={"chart-line"} size={30} color={color} />
-                        </View>
-                    )
-                }}
-            />
-            <Tab.Screen
-                name={"LogoutTab"}
-                component={FakeComponent}
-                options={{
-                    tabBarIcon: ({ color }) => (
-                        <MaterialCommunityIcons name="logout" size={30} color={color} />
-                    )
-                }}
-                listeners={({navigation}) => ({
-                    tabPress: (e) => {
-                        e.preventDefault()
+const HomeTabNavigator = ({navigation}) => {
 
-                        navigation.reset({
-                            index: 0,
-                            routes: [{ name: "login" }]
-                        })
-                    }
-                })}
-            />
-        </Tab.Navigator>
+    const [isModalVisible, setModalVisible] = useState(false)
+
+    return (
+        <>
+            <Tab.Navigator
+                screenOptions={{
+                    headerShown: false,
+                    tabBarShowLabel: false,
+                    tabBarStyle: {
+                        backgroundColor: colors.cardsAndMenus,
+                        height: 120,
+                        paddingTop: 20,
+                        borderTopWidth: 0,
+                    },
+                    tabBarActiveTintColor: colors.text,
+                    tabBarInactiveTintColor: colors.text
+                }}
+            >
+                <Tab.Screen
+                    name={"HomeTab"}
+                    component={HomeScreen}
+                    options={{
+                        tabBarIcon: ({color, focused}) => (
+                            <View
+                                style={[styles.containerTab, {backgroundColor: focused ? colors.primary : 'transparent'}]}>
+                                <MaterialCommunityIcons name={"cube-outline"} size={30} color={color}/>
+                            </View>
+                        )
+                    }}
+                />
+                <Tab.Screen
+                    name={"StopwatchTab"}
+                    component={StopwatchScreen}
+                    options={{
+                        tabBarIcon: ({color, focused}) => (
+                            <View
+                                style={[styles.containerTab, {backgroundColor: focused ? colors.primary : 'transparent'}]}>
+                                <MaterialCommunityIcons name={"timer-outline"} size={30} color={color}/>
+                            </View>
+                        )
+                    }}
+                />
+                <Tab.Screen
+                    name={"AnalyticsTab"}
+                    component={AnalyticsScreen}
+                    options={{
+                        tabBarIcon: ({color, focused}) => (
+                            <View
+                                style={[styles.containerTab, {backgroundColor: focused ? colors.primary : 'transparent'}]}>
+                                <MaterialCommunityIcons name={"chart-line"} size={30} color={color}/>
+                            </View>
+                        )
+                    }}
+                />
+                <Tab.Screen
+                    name={"LogoutTab"}
+                    component={FakeComponent}
+                    options={{
+                        tabBarIcon: ({color}) => (
+                            <MaterialCommunityIcons name="logout" size={30} color={color}/>
+                        )
+                    }}
+                    listeners={() => ({
+                        tabPress: (e) => {
+                            e.preventDefault()
+                            setModalVisible(true)
+                        }
+                    })}
+                />
+            </Tab.Navigator>
+
+            <Modal transparent={true} visible={isModalVisible} animationType={"fade"}
+                   onRequestClose={() => setModalVisible(false)}
+            >
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalBox}>
+                        <Text style={styles.modalTitle}>Você tem certeza que deseja deslogar a conta?</Text>
+
+                        <View style={{flexDirection: 'row', gap: 10}}>
+                            <TouchableOpacity style={[styles.button, styles.cancelButton]}
+                                              onPress={() => setModalVisible(false)}>
+                                <Text style={[{fontWeight: 'bold'}, globalStyles.normalText]}>Cancelar</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[styles.button, styles.continueButton]}
+                                onPress={() => {
+                                    setModalVisible(false)
+                                    navigation.reset({
+                                        index: 0,
+                                        routes: [{name: "login"}]
+                                    })
+                                }}
+                            >
+                                <Text style={[{fontWeight: 'bold'}, globalStyles.normalText]}>Continuar</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+        </>
     )
 }
 
@@ -98,8 +132,8 @@ export default function App() {
 
     if (!fontsLoaded) {
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#313131' }}>
-                <ActivityIndicator size="large" color="#2962FF" />
+            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#313131'}}>
+                <ActivityIndicator size="large" color="#2962FF"/>
             </View>
         );
     }
@@ -123,5 +157,28 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         justifyContent: "center",
         alignItems: "center",
+    },
+    modalOverlay: {
+        ...globalStyles.modalOverlay
+    },
+    modalBox: {
+        ...globalStyles.modalBox,
+        maxWidth: 320
+    },
+    button: {
+        flex: 1,
+        paddingVertical: 10,
+        borderRadius: 8,
+        alignItems: 'center'
+    },
+    continueButton: {
+        backgroundColor: colors.primary
+    },
+    cancelButton: {
+        backgroundColor: colors.backgroundPrimary
+    },
+    modalTitle: {
+        ...globalStyles.modalTitle,
+        textAlign: "center"
     }
 })
