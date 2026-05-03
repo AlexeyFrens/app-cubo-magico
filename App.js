@@ -3,12 +3,8 @@ import {NavigationContainer} from "@react-navigation/native";
 import {LoginScreen} from "./src/screens/LoginScreen";
 import {SignUpScreen} from "./src/screens/SignUpScreen";
 import {HomeScreen} from "./src/screens/HomeScreen";
-import {CubePiecesScreen} from "./src/screens/CubePiecesScreen";
-import {BasicMovesScreen} from "./src/screens/BasicMovesScreen";
-import {BasicMethodScreen} from "./src/screens/BasicMethodScreen";
-import {AdvancedMethodScreen} from "./src/screens/AdvancedMethodScreen";
-import { useFonts, Lato_400Regular, Lato_700Bold } from '@expo-google-fonts/lato'
-import {ActivityIndicator, View, StyleSheet} from "react-native";
+import {Lato_400Regular, Lato_700Bold, useFonts} from '@expo-google-fonts/lato'
+import {ActivityIndicator, StyleSheet, View} from "react-native";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {colors} from "./src/theme/themes";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
@@ -114,10 +110,6 @@ export default function App() {
                 <Stack.Screen name={"login"} component={LoginScreen}/>
                 <Stack.Screen name={"signUp"} component={SignUpScreen}/>
                 <Stack.Screen name={"home"} component={HomeTabNavigator}/>
-                {/*<Stack.Screen name={"cubePieces"} component={CubePiecesScreen}/>*/}
-                {/*<Stack.Screen name={"basicMoves"} component={BasicMovesScreen}/>*/}
-                {/*<Stack.Screen name={"basicMethod"} component={BasicMethodScreen}/>*/}
-                {/*<Stack.Screen name={"advancedMethod"} component={AdvancedMethodScreen}/>*/}
                 <Stack.Screen name={"aulaScreen"} component={AulaTemplateScreen}/>
             </Stack.Navigator>
         </NavigationContainer>
