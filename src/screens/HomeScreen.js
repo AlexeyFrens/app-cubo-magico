@@ -24,6 +24,15 @@ export const HomeScreen = () => {
                 return
             }
 
+            const imagePromises = supabaseData.map((step) => {
+                if (step.image_url) {
+                    return Image.prefetch(step.image_url)
+                }
+                return Promise.resolve()
+            })
+
+            await Promise.all(imagePromises)
+
             navigator.navigate('aulaScreen', {etapas: supabaseData})
         } catch (error) {
             Alert.alert("Erro ao carregar o conteúdo. Verifique sua conexão")
