@@ -1,12 +1,48 @@
-import {Text, StyleSheet, View, TouchableOpacity, Image, TextInput} from "react-native";
+import {ActivityIndicator, Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {images} from "../../assets/ImageStorage";
 import {useNavigation} from "@react-navigation/native";
-import {colors, customFont, globalStyles} from "../theme/themes";
+import {colors, globalStyles} from "../theme/themes";
+import {useState} from "react";
+import {authService} from "../services/authService";
 
 export const SignUpScreen = () => {
 
     const navigation = useNavigation();
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    const signUp = async () => {
+        if (!email || !password || !confirmPassword) {
+            Alert.alert("Atenção", "Preencha todos os campos.")
+            return
+        }
+
+        if (password !== confirmPassword) {
+            Alert.alert("Atenção", "As senhas não coincidem.")
+            return
+        }
+
+        if (password.length < 8) {
+            Alert.alert("Atenção", "A senha deve ter pelo menos 8 caracteres.")
+            return
+        }
+
+        setIsLoading(true)
+
+        try {
+            await authService.signUp(email, password)
+            Alert.alert("Sucesso!", "Conta criada com sucesso. Faça o Login.")
+            navigation.goBack()
+        } catch (error) {
+            Alert.alert("Erro ao cadastrar", error.message)
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     return (
         <SafeAreaProvider>
@@ -25,22 +61,28 @@ export const SignUpScreen = () => {
                         <Text style={styles.text}>Email</Text>
                         <TextInput placeholder={"Ex: fulano@gmail.com"} style={styles.input}
                                    keyboardType={"email-address"} placeholderTextColor={colors.textPlaceholder}
-                                   autoCapitalize={"none"}/>
+                                   autoCapitalize={"none"} onChangeText={setEmail}/>
                     </View>
                     <View style={{gap: 5}}>
                         <Text style={styles.text}>Senha</Text>
                         <TextInput placeholder={"Digite uma senha"} style={styles.input}
-                                   placeholderTextColor={colors.textPlaceholder}/>
+                                   placeholderTextColor={colors.textPlaceholder}
+                                   secureTextEntry={true} autoCapitalize={"none"} onChangeText={setPassword}/>
                     </View>
 
                     <View style={{gap: 5}}>
                         <Text style={styles.text}>Confirmar Senha</Text>
                         <TextInput placeholder={"Digite novamente a senha"} style={styles.input}
-                                   placeholderTextColor={colors.textPlaceholder}/>
+                                   placeholderTextColor={colors.textPlaceholder}
+                                   secureTextEntry={true} autoCapitalize={"none"} onChangeText={setConfirmPassword}/>
                     </View>
 
-                    <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
-                        <Text style={styles.buttonText}>Inscrever</Text>
+                    <TouchableOpacity style={styles.button} onPress={signUp} disabled={isLoading}>
+                        {isLoading ? (
+                            <ActivityIndicator color="white" />
+                        ) : (
+                            <Text style={styles.buttonText}>Inscrever</Text>
+                        )}
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>

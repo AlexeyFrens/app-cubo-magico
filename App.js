@@ -4,7 +4,7 @@ import {LoginScreen} from "./src/screens/LoginScreen";
 import {SignUpScreen} from "./src/screens/SignUpScreen";
 import {HomeScreen} from "./src/screens/HomeScreen";
 import {Lato_400Regular, Lato_700Bold, useFonts} from '@expo-google-fonts/lato'
-import {ActivityIndicator, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, Alert, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {colors, globalStyles} from "./src/theme/themes";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
@@ -12,6 +12,7 @@ import {StopwatchScreen} from "./src/screens/StopwatchScreen";
 import {AnalyticsScreen} from "./src/screens/AnalyticsScreen";
 import {AulaTemplateScreen} from "./src/screens/AulaTemplateScreen";
 import {useState} from "react";
+import {authService} from "./src/services/authService";
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -21,6 +22,16 @@ const FakeComponent = () => (<View></View>)
 const HomeTabNavigator = ({navigation}) => {
 
     const [isModalVisible, setModalVisible] = useState(false)
+
+    const signOut = async () => {
+        try {
+            await authService.signOut()
+            setModalVisible(false)
+            navigation.reset({index: 0, routes: [{name: "login"}]})
+        } catch (error) {
+            Alert.alert("Erro ao sair", error.message)
+        }
+    }
 
     return (
         <>
@@ -103,16 +114,7 @@ const HomeTabNavigator = ({navigation}) => {
                                               onPress={() => setModalVisible(false)}>
                                 <Text style={[{fontWeight: 'bold'}, globalStyles.normalText]}>Cancelar</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[styles.button, styles.continueButton]}
-                                onPress={() => {
-                                    setModalVisible(false)
-                                    navigation.reset({
-                                        index: 0,
-                                        routes: [{name: "login"}]
-                                    })
-                                }}
-                            >
+                            <TouchableOpacity style={[styles.button, styles.continueButton]} onPress={signOut}>
                                 <Text style={[{fontWeight: 'bold'}, globalStyles.normalText]}>Continuar</Text>
                             </TouchableOpacity>
                         </View>
