@@ -1,4 +1,4 @@
-import {ActivityIndicator, Alert, Image, Modal, ScrollView, StyleSheet, Text, View} from "react-native";
+import {ActivityIndicator, Image, Modal, ScrollView, StyleSheet, Text, View} from "react-native";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {images} from "../../assets/ImageStorage";
 import ClassButtonNavigator from "../components/ClassButtonNavigator";
@@ -6,10 +6,12 @@ import {useNavigation} from "@react-navigation/native";
 import {colors, customFont, globalStyles} from "../theme/themes";
 import {useState} from "react";
 import {classService} from "../services/classService";
+import {useAlert} from "../contexts/AlertContext";
 
 export const HomeScreen = () => {
 
     const navigator = useNavigation()
+    const {showAlert} = useAlert()
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -20,7 +22,7 @@ export const HomeScreen = () => {
             const supabaseData = await classService.searchStapsByTrail(idTrilha)
 
             if (!supabaseData || supabaseData.length === 0) {
-                Alert.alert("Nenhuma aula encontrada para esta trilha no momento.")
+                showAlert("Nenhuma aula encontrada para esta trilha no momento.")
                 return
             }
 
@@ -35,7 +37,7 @@ export const HomeScreen = () => {
 
             navigator.navigate('aulaScreen', {etapas: supabaseData})
         } catch (error) {
-            Alert.alert("Erro ao carregar o conteúdo. Verifique sua conexão")
+            showAlert("Erro ao carregar o conteúdo. Verifique sua conexão")
         } finally {
             setIsLoading(false)
         }

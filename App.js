@@ -4,7 +4,7 @@ import {LoginScreen} from "./src/screens/LoginScreen";
 import {SignUpScreen} from "./src/screens/SignUpScreen";
 import {HomeScreen} from "./src/screens/HomeScreen";
 import {Lato_400Regular, Lato_700Bold, useFonts} from '@expo-google-fonts/lato'
-import {ActivityIndicator, Alert, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {colors, globalStyles} from "./src/theme/themes";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
@@ -13,6 +13,7 @@ import {AnalyticsScreen} from "./src/screens/AnalyticsScreen";
 import {AulaTemplateScreen} from "./src/screens/AulaTemplateScreen";
 import {useState} from "react";
 import {authService} from "./src/services/authService";
+import {AlertProvider, useAlert} from "./src/contexts/AlertContext";
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -22,6 +23,7 @@ const FakeComponent = () => (<View></View>)
 const HomeTabNavigator = ({navigation}) => {
 
     const [isModalVisible, setModalVisible] = useState(false)
+    const {showAlert} = useAlert()
 
     const signOut = async () => {
         try {
@@ -29,7 +31,7 @@ const HomeTabNavigator = ({navigation}) => {
             setModalVisible(false)
             navigation.reset({index: 0, routes: [{name: "login"}]})
         } catch (error) {
-            Alert.alert("Erro ao sair", error.message)
+            showAlert("Erro ao sair", error.message)
         }
     }
 
@@ -141,14 +143,16 @@ export default function App() {
     }
 
     return (
-        <NavigationContainer>
-            <Stack.Navigator screenOptions={{headerShown: false}}>
-                <Stack.Screen name={"login"} component={LoginScreen}/>
-                <Stack.Screen name={"signUp"} component={SignUpScreen}/>
-                <Stack.Screen name={"home"} component={HomeTabNavigator}/>
-                <Stack.Screen name={"aulaScreen"} component={AulaTemplateScreen}/>
-            </Stack.Navigator>
-        </NavigationContainer>
+        <AlertProvider>
+            <NavigationContainer>
+                <Stack.Navigator screenOptions={{headerShown: false}}>
+                    <Stack.Screen name={"login"} component={LoginScreen}/>
+                    <Stack.Screen name={"signUp"} component={SignUpScreen}/>
+                    <Stack.Screen name={"home"} component={HomeTabNavigator}/>
+                    <Stack.Screen name={"aulaScreen"} component={AulaTemplateScreen}/>
+                </Stack.Navigator>
+            </NavigationContainer>
+        </AlertProvider>
     );
 }
 

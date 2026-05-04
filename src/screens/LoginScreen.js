@@ -1,14 +1,16 @@
-import {Image, Text, TextInput, View, StyleSheet, TouchableOpacity, Alert, ActivityIndicator} from "react-native";
+import {Image, Text, TextInput, View, StyleSheet, TouchableOpacity, ActivityIndicator} from "react-native";
 import {images} from "../../assets/ImageStorage";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {useNavigation} from "@react-navigation/native";
 import {colors, customFont, globalStyles} from "../theme/themes";
 import {useState} from "react";
 import {authService} from "../services/authService";
+import {useAlert} from "../contexts/AlertContext";
 
 export const LoginScreen = () => {
 
     const navigation = useNavigation()
+    const {showAlert} = useAlert()
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -16,7 +18,7 @@ export const LoginScreen = () => {
 
     const signIn = async () => {
         if (!email || !password) {
-            Alert.alert("Atenção", "Por favor, insira o email e a senha.");
+            showAlert("Atenção", "Por favor, insira o email e a senha.");
             return
         }
 
@@ -26,7 +28,7 @@ export const LoginScreen = () => {
             await authService.signIn(email, password)
             navigation.reset({index: 0, routes: [{name: 'home'}]})
         } catch (error) {
-            Alert.alert("Erro ao acessar", "Email ou senha incorretos.")
+            showAlert("Erro ao acessar", "Email ou senha incorretos.")
         } finally {
             setIsLoading(false)
         }

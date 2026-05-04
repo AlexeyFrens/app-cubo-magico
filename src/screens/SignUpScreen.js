@@ -1,14 +1,16 @@
-import {ActivityIndicator, Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {images} from "../../assets/ImageStorage";
 import {useNavigation} from "@react-navigation/native";
 import {colors, globalStyles} from "../theme/themes";
 import {useState} from "react";
 import {authService} from "../services/authService";
+import {useAlert} from "../contexts/AlertContext";
 
 export const SignUpScreen = () => {
 
     const navigation = useNavigation();
+    const {showAlert} = useAlert()
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -17,17 +19,17 @@ export const SignUpScreen = () => {
 
     const signUp = async () => {
         if (!email || !password || !confirmPassword) {
-            Alert.alert("Atenção", "Preencha todos os campos.")
+            showAlert("Atenção", "Preencha todos os campos.")
             return
         }
 
         if (password !== confirmPassword) {
-            Alert.alert("Atenção", "As senhas não coincidem.")
+            showAlert("Atenção", "As senhas não coincidem.")
             return
         }
 
         if (password.length < 8) {
-            Alert.alert("Atenção", "A senha deve ter pelo menos 8 caracteres.")
+            showAlert("Atenção", "A senha deve ter pelo menos 8 caracteres.")
             return
         }
 
@@ -35,10 +37,10 @@ export const SignUpScreen = () => {
 
         try {
             await authService.signUp(email, password)
-            Alert.alert("Sucesso!", "Conta criada com sucesso. Faça o Login.")
+            showAlert("Sucesso!", "Conta criada com sucesso. Faça o Login.")
             navigation.goBack()
         } catch (error) {
-            Alert.alert("Erro ao cadastrar", error.message)
+            showAlert("Erro ao cadastrar", error.message)
         } finally {
             setIsLoading(false)
         }
