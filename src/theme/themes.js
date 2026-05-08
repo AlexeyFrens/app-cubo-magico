@@ -5,6 +5,7 @@ export const colors = {
     textPlaceholder: '#798489',
     stopwatchStart: '#00E676',
     stopwatchStop: '#FF3D00',
+    stopwatchReset: '#585858',
     primary: '#2962FF',
     categoryCubePieces: '#0D6402',
     categoryBeginner: '#FFC107',
@@ -22,7 +23,8 @@ export const customFont = {
         medium: 16,
         large: 20,
         xlarge: 22,
-        xxlarge: 24
+        xxlarge: 24,
+        extraLarge: 60
     }
 };
 
