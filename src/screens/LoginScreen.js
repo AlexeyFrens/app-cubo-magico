@@ -70,7 +70,7 @@ export const LoginScreen = () => {
                                                    secureTextEntry={true} autoCapitalize={"none"} onChangeText={setPassword}/>
                                     </View>
 
-                                    <Text style={styles.link}>Esqueci minha senha</Text>
+                                    <Text style={styles.link} onPress={() => navigation.navigate('recovery')}>Esqueci minha senha</Text>
 
                                     <TouchableOpacity style={styles.button} onPress={signIn} disabled={isLoading}>
                                         {isLoading ? (

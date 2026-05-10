@@ -14,6 +14,7 @@ import {AulaTemplateScreen} from "./src/screens/AulaTemplateScreen";
 import {useState} from "react";
 import {authService} from "./src/services/authService";
 import {AlertProvider, useAlert} from "./src/contexts/AlertContext";
+import {RecoveryScreen} from "./src/screens/RecoveryScreen";
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -148,6 +149,7 @@ export default function App() {
                 <Stack.Navigator screenOptions={{headerShown: false}}>
                     <Stack.Screen name={"login"} component={LoginScreen}/>
                     <Stack.Screen name={"signUp"} component={SignUpScreen}/>
+                    <Stack.Screen name={"recovery"} component={RecoveryScreen}/>
                     <Stack.Screen name={"home"} component={HomeTabNavigator}/>
                     <Stack.Screen name={"aulaScreen"} component={AulaTemplateScreen}/>
                 </Stack.Navigator>
