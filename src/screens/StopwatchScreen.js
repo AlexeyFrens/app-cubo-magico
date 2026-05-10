@@ -1,4 +1,4 @@
-import {Image, Text, TouchableOpacity, View, StyleSheet} from "react-native";
+import {Image, Text, TouchableOpacity, View, StyleSheet, ActivityIndicator} from "react-native";
 import {useEffect, useRef, useState} from "react";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {images} from "../../assets/ImageStorage";
@@ -11,6 +11,7 @@ const Scramble = require('scrambo')
 export const StopwatchScreen = () => {
 
     const [isRunning, setIsRunning] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [elapsedTime, setElapsedTime] = useState(0)
     const intervalIdRef = useRef(null)
     const startTime = useRef(0)
@@ -71,6 +72,9 @@ export const StopwatchScreen = () => {
     }
 
     const saveSolve = async () => {
+
+        setIsLoading(true)
+
         try {
             if (scramble.length > 0) {
 
@@ -85,6 +89,8 @@ export const StopwatchScreen = () => {
             }
         } catch (error) {
             showAlert("Erro", "Falha ao salvar tempo!")
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -117,7 +123,11 @@ export const StopwatchScreen = () => {
 
                             {elapsedTime !== 0 && isRunning === false && (
                                 <TouchableOpacity onPress={saveSolve} style={globalStyles.roundedButton}>
-                                    <Text style={globalStyles.buttonTextStyle}>Salvar Tempo</Text>
+                                    {isLoading ? (
+                                        <ActivityIndicator color="white" />
+                                    ) : (
+                                        <Text style={globalStyles.buttonTextStyle}>Salvar Tempo</Text>
+                                    )}
                                 </TouchableOpacity>
                             )}
                         </View>
