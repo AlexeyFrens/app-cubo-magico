@@ -51,7 +51,8 @@ export const HomeScreen = () => {
 
                     <Text style={styles.pageTitle}>Bem vindo Robert!</Text>
 
-                    <ScrollView contentContainerStyle={{gap: 20, paddingBottom: 8}}>
+                    <ScrollView contentContainerStyle={{gap: 20, paddingBottom: 8}}
+                                showsVerticalScrollIndicator={false}>
                         <ClassButtonNavigator
                             classImage={images.cubePieces}
                             actionNav={() => openClass(1)}
@@ -85,7 +86,7 @@ export const HomeScreen = () => {
                     <Modal transparent={true} visible={isLoading} animationType={"fade"}>
                         <View style={styles.loadingOverlay}>
                             <View style={styles.loadingBox}>
-                                <ActivityIndicator size="large" color={colors.primary} />
+                                <ActivityIndicator size="large" color={colors.primary}/>
                                 <Text style={styles.loadingText}>Preparando aula...</Text>
                             </View>
                         </View>
