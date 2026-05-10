@@ -4,6 +4,9 @@ import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {images} from "../../assets/ImageStorage";
 import {colors, customFont, globalStyles} from "../theme/themes";
 import {useAlert} from "../contexts/AlertContext";
+import {historicalTimeService} from "../services/historicalTimeService";
+
+const Scramble = require('scrambo')
 
 export const StopwatchScreen = () => {
 
@@ -12,8 +15,6 @@ export const StopwatchScreen = () => {
     const intervalIdRef = useRef(null)
     const startTime = useRef(0)
     const [scramble, setScramble] = useState([])
-
-    const Scramble = require('scrambo')
     const {showAlert} = useAlert()
 
     useEffect(() => {
@@ -69,6 +70,24 @@ export const StopwatchScreen = () => {
         }
     }
 
+    const saveSolve = async () => {
+        try {
+            if (scramble.length > 0) {
+
+                const formatedTime = formatTime()
+
+                await historicalTimeService.saveHistoricalTime(formatedTime, scramble)
+
+                showAlert("Sucesso", "Tempo e sequência salvos com sucesso!")
+            } else {
+                showAlert("Atenção", "Antes de salvar o tempo, " +
+                    "é necessário gerar uma sequência aleatória utilizando o botão \"Gerar Sequência\".")
+            }
+        } catch (error) {
+            showAlert("Erro", "Falha ao salvar tempo!")
+        }
+    }
+
     return (
         <>
             <SafeAreaProvider>
@@ -95,6 +114,12 @@ export const StopwatchScreen = () => {
                                     )}
                                 </TouchableOpacity>
                             </View>
+
+                            {elapsedTime !== 0 && isRunning === false && (
+                                <TouchableOpacity onPress={saveSolve} style={globalStyles.roundedButton}>
+                                    <Text style={globalStyles.buttonTextStyle}>Salvar Tempo</Text>
+                                </TouchableOpacity>
+                            )}
                         </View>
 
                         <View style={{gap: 20}}>
@@ -104,7 +129,8 @@ export const StopwatchScreen = () => {
                                         Sequência
                                     </Text>
 
-                                    <View style={{backgroundColor: colors.cardsAndMenus, padding: 15, borderRadius: 10}}>
+                                    <View
+                                        style={{backgroundColor: colors.cardsAndMenus, padding: 15, borderRadius: 10}}>
                                         <View style={styles.classScrambleContainer}>
                                             {scramble.map((word, index) => (
                                                 <View key={index} style={styles.classScrambleBox}>
@@ -133,7 +159,7 @@ const styles = StyleSheet.create({
     },
     mainContent: {
         width: '100%',
-        gap: 50
+        gap: 30
     },
     pageTitle: {
         ...globalStyles.pageTitleStyle,
