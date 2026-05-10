@@ -10,6 +10,9 @@ export const StopwatchScreen = () => {
     const [elapsedTime, setElapsedTime] = useState(0)
     const intervalIdRef = useRef(null)
     const startTime = useRef(0)
+    const [scramble, setScramble] = useState([])
+
+    const Scramble = require('scrambo')
 
     useEffect(() => {
 
@@ -52,6 +55,14 @@ export const StopwatchScreen = () => {
         return `${minutes}:${seconds}:${miliseconds}`
     }
 
+    const getScramble = () => {
+        const generatedScramble = new Scramble().length(20).get(1)
+
+        const arrayScramble = generatedScramble.toString().split(" ")
+
+        setScramble(arrayScramble)
+    }
+
     return (
         <>
             <SafeAreaProvider>
@@ -59,22 +70,48 @@ export const StopwatchScreen = () => {
 
                     <Image style={{alignSelf: 'flex-start'}} source={images.logoImage} resizeMode={"contain"}/>
 
-                    <Text style={styles.pageTitle}>Cronômetro</Text>
-
                     <View style={styles.mainContent}>
-                        <Text style={styles.formatTimeText}>{formatTime()}</Text>
+                        <View style={{gap: 20}}>
+                            <Text style={styles.pageTitle}>Cronômetro</Text>
 
-                        <View style={{flexDirection: "row", gap: 20}}>
-                            <TouchableOpacity onPress={reset} style={[styles.button, styles.resetButton]}>
-                                <Text style={globalStyles.buttonTextStyle}>Reset</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={isRunning ? stop : start}
-                                              style={[styles.button, isRunning ? styles.stopButton : styles.startButton]}>
-                                {isRunning ? (
-                                    <Text style={globalStyles.buttonTextStyle}>Stop</Text>
-                                ) : (
-                                    <Text style={globalStyles.buttonTextStyle}>Start</Text>
-                                )}
+                            <Text style={styles.formatTimeText}>{formatTime()}</Text>
+
+                            <View style={{flexDirection: "row", gap: 20}}>
+                                <TouchableOpacity onPress={reset} style={[styles.button, styles.resetButton]}>
+                                    <Text style={globalStyles.buttonTextStyle}>Reset</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={isRunning ? stop : start}
+                                                  style={[styles.button, isRunning ? styles.stopButton : styles.startButton]}>
+                                    {isRunning ? (
+                                        <Text style={globalStyles.buttonTextStyle}>Stop</Text>
+                                    ) : (
+                                        <Text style={globalStyles.buttonTextStyle}>Start</Text>
+                                    )}
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
+                        <View style={{gap: 20}}>
+                            {scramble && (
+                                <>
+                                    <Text style={styles.pageTitle}>
+                                        Sequência
+                                    </Text>
+
+                                    <View style={{backgroundColor: colors.cardsAndMenus, padding: 15, borderRadius: 10}}>
+                                        <View style={styles.classScrambleContainer}>
+                                            {scramble.map((word, index) => (
+                                                <View key={index} style={styles.classScrambleBox}>
+                                                    <Text style={styles.classScrambleText}>{word}</Text>
+                                                </View>
+                                            ))}
+                                        </View>
+                                    </View>
+                                </>
+                            )}
+
+                            <TouchableOpacity onPress={getScramble} style={globalStyles.roundedButton}>
+                                <Text style={globalStyles.buttonTextStyle}>Gerar Sequência</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -89,18 +126,18 @@ const styles = StyleSheet.create({
         ...globalStyles.container
     },
     mainContent: {
-        flexGrow: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        gap: 20
+        width: '100%',
+        gap: 50
     },
     pageTitle: {
-        ...globalStyles.pageTitleStyle
+        ...globalStyles.pageTitleStyle,
+        textAlign: 'center',
     },
     formatTimeText: {
         fontFamily: customFont.bold,
         fontSize: customFont.sizes.extraLarge,
-        color: colors.text
+        color: colors.text,
+        textAlign: 'center'
     },
     button: {
         flex: 1,
@@ -116,5 +153,14 @@ const styles = StyleSheet.create({
     },
     resetButton: {
         backgroundColor: colors.stopwatchReset
-    }
+    },
+    classScrambleContainer: {
+        ...globalStyles.classScrambleContainer
+    },
+    classScrambleBox: {
+        ...globalStyles.classScrambleBox
+    },
+    classScrambleText: {
+        ...globalStyles.classScrambleText
+    },
 })

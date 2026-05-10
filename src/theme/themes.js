@@ -105,5 +105,28 @@ export const globalStyles = {
         color: colors.text,
         fontFamily: customFont.bold,
         fontSize: customFont.sizes.medium,
-    }
+    },
+    classScrambleContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 3,
+        alignItems: 'center',
+    },
+    classScrambleBox: {
+        backgroundColor: colors.primary,
+        padding: 10,
+        boxShadow: [{
+            color: 'rgba(0, 0, 0, 0.6)',
+            blurRadius: 1,
+            offsetX: 0,
+            offsetY: 2
+        }],
+        borderRadius: 5
+    },
+    classScrambleText: {
+        fontSize: customFont.sizes.small,
+        color: colors.text,
+        fontFamily: customFont.regular,
+        fontWeight: 'bold'
+    },
 }

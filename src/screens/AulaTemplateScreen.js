@@ -135,24 +135,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     classScrambleContainer: {
-        flexDirection: 'row',
-        gap: 3,
-        alignItems: 'center',
+       ...globalStyles.classScrambleContainer
     },
     classScrambleBox: {
-        backgroundColor: colors.primary,
-        padding: 10,
-        boxShadow: [{
-            color: 'rgba(0, 0, 0, 0.6)',
-            blurRadius: 1,
-            offsetX: 0,
-            offsetY: 2
-        }],
-        borderRadius: 5
+        ...globalStyles.classScrambleBox
     },
     classScrambleText: {
-        ...globalStyles.normalText,
-        fontWeight: 'bold'
+        ...globalStyles.classScrambleText
     },
     button: {
         flex: 1,
