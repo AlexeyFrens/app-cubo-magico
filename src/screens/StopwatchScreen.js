@@ -3,6 +3,7 @@ import {useEffect, useRef, useState} from "react";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {images} from "../../assets/ImageStorage";
 import {colors, customFont, globalStyles} from "../theme/themes";
+import {useAlert} from "../contexts/AlertContext";
 
 export const StopwatchScreen = () => {
 
@@ -13,6 +14,7 @@ export const StopwatchScreen = () => {
     const [scramble, setScramble] = useState([])
 
     const Scramble = require('scrambo')
+    const {showAlert} = useAlert()
 
     useEffect(() => {
 
@@ -56,11 +58,15 @@ export const StopwatchScreen = () => {
     }
 
     const getScramble = () => {
-        const generatedScramble = new Scramble().length(20).get(1)
+        try {
+            const generatedScramble = new Scramble().length(20).get(1)
 
-        const arrayScramble = generatedScramble.toString().split(" ")
+            const arrayScramble = generatedScramble.toString().split(" ")
 
-        setScramble(arrayScramble)
+            setScramble(arrayScramble)
+        } catch (error) {
+            showAlert("Erro", "Falha em gerar sequência!")
+        }
     }
 
     return (
@@ -92,7 +98,7 @@ export const StopwatchScreen = () => {
                         </View>
 
                         <View style={{gap: 20}}>
-                            {scramble && (
+                            {scramble.length > 0 && (
                                 <>
                                     <Text style={styles.pageTitle}>
                                         Sequência
