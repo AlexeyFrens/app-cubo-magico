@@ -33,5 +33,29 @@ export const authService = {
         if (error) {
             throw new Error(error.message)
         }
+    },
+
+    requestPasswordReset: async (email) => {
+        const {error} = await supabase.auth.resetPasswordForEmail(email)
+
+        if (error) throw new Error(error.message)
+    },
+
+    verifyOtpForResetPassword: async (email, code) => {
+        const {error} = await supabase.auth.verifyOtp({
+            email: email,
+            token: code,
+            type: 'recovery'
+        })
+
+        if (error) throw new Error("Código inválido ou expirado.")
+    },
+
+    updatePasswordWithCode: async (newPassword) => {
+        const {error} = await supabase.auth.updateUser({
+            password: newPassword
+        })
+
+        if (error) throw new Error("Falha ao atualizar a senha.")
     }
 }
