@@ -105,7 +105,7 @@ export const AnalyticsScreen = ({route}) => {
                                     }]}>
                                         <Text style={[styles.menorEMaiorText, {color: colors.text}]}>Melhor Tempo</Text>
                                         <Text
-                                            style={[styles.totalResolutionsText, {color: colors.categoryBeginner}]}>{betterTime()}</Text>
+                                            style={[styles.totalResolutionsText, {color: colors.categoryBeginner, textAlign: 'center'}]}>{betterTime()}</Text>
                                     </View>
                                     <View style={[styles.totalResolutions, {
                                         flexDirection: 'column',
@@ -115,7 +115,7 @@ export const AnalyticsScreen = ({route}) => {
                                     }]}>
                                         <Text style={[styles.menorEMaiorText, {color: colors.text}]}>Pior Tempo</Text>
                                         <Text
-                                            style={[styles.totalResolutionsText, {color: colors.categoryBeginner}]}>{lossTime()}</Text>
+                                            style={[styles.totalResolutionsText, {color: colors.categoryBeginner, textAlign: 'center'}]}>{lossTime()}</Text>
                                     </View>
                                 </View>
                             </View>
