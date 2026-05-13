@@ -28,5 +28,15 @@ export const historicalTimeService = {
         if (error) throw new Error("Erro ao buscar o histórico de tempos: " + error.message)
 
         return data
+    },
+
+    deleteHistoricalTime: async (id) => {
+        const {error} = await supabase.from('historico_tempos')
+            .delete()
+            .eq('id', id)
+
+        if (error) throw new Error(`Erro ao deletar o histórico de tempo com o id ${id}: ` + error.message)
+
+        return true
     }
 }
