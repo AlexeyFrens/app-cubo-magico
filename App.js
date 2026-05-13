@@ -15,6 +15,7 @@ import {useState} from "react";
 import {authService} from "./src/services/authService";
 import {AlertProvider, useAlert} from "./src/contexts/AlertContext";
 import {RecoveryScreen} from "./src/screens/RecoveryScreen";
+import {historicalTimeService} from "./src/services/historicalTimeService";
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -24,6 +25,7 @@ const FakeComponent = () => (<View></View>)
 const HomeTabNavigator = ({navigation}) => {
 
     const [isModalVisible, setModalVisible] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const {showAlert} = useAlert()
 
     const signOut = async () => {
@@ -33,6 +35,18 @@ const HomeTabNavigator = ({navigation}) => {
             navigation.reset({index: 0, routes: [{name: "login"}]})
         } catch (error) {
             showAlert("Erro ao sair", error.message)
+        }
+    }
+
+    const openAnalytics = async () => {
+        setIsLoading(true)
+
+        try {
+             return await historicalTimeService.searchHistorialTimes()
+        } catch(error) {
+            showAlert("Erro", error.message)
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -87,6 +101,15 @@ const HomeTabNavigator = ({navigation}) => {
                             </View>
                         )
                     }}
+                    listeners={({navigation}) => ({
+                        tabPress: async (e) => {
+                            e.preventDefault()
+
+                            const historicalTime = await openAnalytics()
+
+                            navigation.navigate("AnalyticsTab", {data: historicalTime})
+                        }
+                    })}
                 />
                 <Tab.Screen
                     name={"LogoutTab"}
@@ -121,6 +144,15 @@ const HomeTabNavigator = ({navigation}) => {
                                 <Text style={[{fontWeight: 'bold'}, globalStyles.normalText]}>Continuar</Text>
                             </TouchableOpacity>
                         </View>
+                    </View>
+                </View>
+            </Modal>
+
+            <Modal transparent={true} visible={isLoading} animationType={"fade"}>
+                <View style={styles.loadingOverlay}>
+                    <View style={styles.loadingBox}>
+                        <ActivityIndicator size="large" color={colors.primary}/>
+                        <Text style={styles.loadingText}>Preparando Análises...</Text>
                     </View>
                 </View>
             </Modal>
@@ -188,5 +220,14 @@ const styles = StyleSheet.create({
     modalTitle: {
         ...globalStyles.modalTitle,
         textAlign: "center"
+    },
+    loadingOverlay: {
+        ...globalStyles.modalOverlay
+    },
+    loadingBox: {
+        ...globalStyles.modalBox
+    },
+    loadingText: {
+        ...globalStyles.modalTitle
     }
 })

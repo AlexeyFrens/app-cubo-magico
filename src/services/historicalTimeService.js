@@ -16,5 +16,17 @@ export const historicalTimeService = {
         if (error) {
             throw new Error(error.message)
         }
+    },
+
+    searchHistorialTimes: async () => {
+
+        const {data, error} = await supabase
+            .from('historico_tempos')
+            .select('*')
+            .order('created_at')
+
+        if (error) throw new Error("Erro ao buscar o histórico de tempos: " + error.message)
+
+        return data
     }
 }
