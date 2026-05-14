@@ -1,4 +1,14 @@
-import {Image, Text, StyleSheet, View, ScrollView, TouchableOpacity, Modal, Dimensions} from "react-native";
+import {
+    Image,
+    Text,
+    StyleSheet,
+    View,
+    ScrollView,
+    TouchableOpacity,
+    Modal,
+    Dimensions,
+    ActivityIndicator
+} from "react-native";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {images} from "../../assets/ImageStorage";
 import {colors, customFont, globalStyles} from "../theme/themes";
@@ -11,6 +21,7 @@ import {LineChart} from "react-native-gifted-charts";
 export const AnalyticsScreen = ({route}) => {
 
     const [isModalVisible, setModalVisible] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [idToDelete, setIdToDelete] = useState(null)
     const [timesList, setTimesList] = useState(route.params.data)
 
@@ -97,6 +108,8 @@ export const AnalyticsScreen = ({route}) => {
     }
 
     const deleteTime = async () => {
+        setIsLoading(true)
+
         try {
             await historicalTimeService.deleteHistoricalTime(idToDelete)
 
@@ -107,6 +120,8 @@ export const AnalyticsScreen = ({route}) => {
         } catch (error) {
             showAlert("Erro", error.message)
             setModalVisible(false)
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -267,8 +282,13 @@ export const AnalyticsScreen = ({route}) => {
                                             </TouchableOpacity>
                                             <TouchableOpacity style={[styles.button, styles.deleteButton]}
                                                               onPress={deleteTime}>
-                                                <Text
-                                                    style={[{fontWeight: 'bold'}, globalStyles.normalText]}>Deletar</Text>
+                                                {isLoading ? (
+                                                    <ActivityIndicator color={"white"} />
+                                                ) : (
+                                                    <Text style={[{fontWeight: 'bold'}, globalStyles.normalText]}>
+                                                        Deletar
+                                                    </Text>
+                                                )}
                                             </TouchableOpacity>
                                         </View>
                                     </View>
