@@ -151,7 +151,7 @@ const HomeTabNavigator = ({navigation}) => {
             <Modal transparent={true} visible={isLoading} animationType={"fade"}>
                 <View style={styles.loadingOverlay}>
                     <View style={styles.loadingBox}>
-                        <ActivityIndicator size="large" color={colors.primary}/>
+                        <ActivityIndicator size="large" color={"white"}/>
                         <Text style={styles.loadingText}>Preparando Análises...</Text>
                     </View>
                 </View>
