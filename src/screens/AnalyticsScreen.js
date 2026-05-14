@@ -90,7 +90,7 @@ export const AnalyticsScreen = ({route}) => {
     const screenWidth = Dimensions.get("window").width;
     const chartWidth = screenWidth - 120
     const dinamicSpacing = chartData.length > 1
-        ? Math.max(60, chartWidth / (chartData.length - 1))
+        ? Math.max(60, (chartWidth - 60) / (chartData.length - 1))
         : 70
 
     const getScramble = (scramble) => {
