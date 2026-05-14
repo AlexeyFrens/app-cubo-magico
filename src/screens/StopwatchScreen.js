@@ -1,14 +1,17 @@
-import {Image, Text, TouchableOpacity, View, StyleSheet, ActivityIndicator} from "react-native";
+import {ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {useEffect, useRef, useState} from "react";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {images} from "../../assets/ImageStorage";
 import {colors, customFont, globalStyles} from "../theme/themes";
 import {useAlert} from "../contexts/AlertContext";
 import {historicalTimeService} from "../services/historicalTimeService";
+import {useNavigation} from "@react-navigation/native";
 
 const Scramble = require('scrambo')
 
 export const StopwatchScreen = () => {
+
+    const navigation = useNavigation();
 
     const [isRunning, setIsRunning] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -17,6 +20,17 @@ export const StopwatchScreen = () => {
     const startTime = useRef(0)
     const [scramble, setScramble] = useState([])
     const {showAlert} = useAlert()
+
+    useEffect(() => {
+        return navigation.addListener('blur', () => {
+            setIsRunning(false)
+            setIsLoading(false)
+            setElapsedTime(0)
+            intervalIdRef.current = null
+            startTime.current = 0
+            setScramble([])
+        })
+    }, [navigation]);
 
     useEffect(() => {
 
