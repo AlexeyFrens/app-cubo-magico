@@ -1,4 +1,4 @@
-import {Image, Text, StyleSheet, View, ScrollView, TouchableOpacity, Modal} from "react-native";
+import {Image, Text, StyleSheet, View, ScrollView, TouchableOpacity, Modal, Dimensions} from "react-native";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {images} from "../../assets/ImageStorage";
 import {colors, customFont, globalStyles} from "../theme/themes";
@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 import {historicalTimeService} from "../services/historicalTimeService";
 import {useAlert} from "../contexts/AlertContext";
 import {Feather} from "@expo/vector-icons";
+import {LineChart} from "react-native-gifted-charts";
 
 export const AnalyticsScreen = ({route}) => {
 
@@ -50,6 +51,36 @@ export const AnalyticsScreen = ({route}) => {
 
         return maiorTempo;
     }
+
+    const convertTime = (time) => {
+        const fields = time.split(":")
+
+        const minutes = parseInt(fields[0])
+        const seconds = parseInt(fields[1])
+        const hundredths = parseInt(fields[2])
+
+        return (minutes * 60) + seconds + (hundredths / 100)
+    }
+
+    const getChartData = () => {
+        return timesList.map((time, index) => {
+            const timeConverted = convertTime(time.time_cs)
+
+            return {
+                value: timeConverted,
+                label: `Res. ${index + 1}`,
+                dataPointText: time.time_cs
+            }
+        })
+    }
+
+    const chartData = getChartData();
+
+    const screenWidth = Dimensions.get("window").width;
+    const chartWidth = screenWidth - 120
+    const dinamicSpacing = chartData.length > 1
+        ? Math.max(60, chartWidth / (chartData.length - 1))
+        : 70
 
     const getScramble = (scramble) => {
         let scrambleString = ""
@@ -105,7 +136,10 @@ export const AnalyticsScreen = ({route}) => {
                                     }]}>
                                         <Text style={[styles.menorEMaiorText, {color: colors.text}]}>Melhor Tempo</Text>
                                         <Text
-                                            style={[styles.totalResolutionsText, {color: colors.categoryBeginner, textAlign: 'center'}]}>{betterTime()}</Text>
+                                            style={[styles.totalResolutionsText, {
+                                                color: colors.categoryBeginner,
+                                                textAlign: 'center'
+                                            }]}>{betterTime()}</Text>
                                     </View>
                                     <View style={[styles.totalResolutions, {
                                         flexDirection: 'column',
@@ -115,7 +149,10 @@ export const AnalyticsScreen = ({route}) => {
                                     }]}>
                                         <Text style={[styles.menorEMaiorText, {color: colors.text}]}>Pior Tempo</Text>
                                         <Text
-                                            style={[styles.totalResolutionsText, {color: colors.categoryBeginner, textAlign: 'center'}]}>{lossTime()}</Text>
+                                            style={[styles.totalResolutionsText, {
+                                                color: colors.categoryBeginner,
+                                                textAlign: 'center'
+                                            }]}>{lossTime()}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -128,8 +165,33 @@ export const AnalyticsScreen = ({route}) => {
                                         evolução</Text>
                                 </View>
                             ) : (
-                                <View>
-
+                                <View style={{width: '100%'}}>
+                                    <LineChart
+                                        data={chartData}
+                                        width={chartWidth}
+                                        areaChart={true}
+                                        color={colors.primary}
+                                        thickness={3}
+                                        startFillColor={colors.primary}
+                                        endFillColor={colors.primary}
+                                        startOpacity={0.6}
+                                        endOpacity={0.1}
+                                        dataPointsColor={"white"}
+                                        dataPointsRadius={5}
+                                        textColor={"white"}
+                                        textFontSize={12}
+                                        textShiftX={-10}
+                                        textShiftY={-12}
+                                        yAxisTextStyle={{color: colors.textPlaceholder, fontSize: 11}}
+                                        xAxisLabelTextStyle={{color: colors.textPlaceholder, fontSize: 11}}
+                                        yAxisColor={colors.textPlaceholder}
+                                        xAxisColor={colors.textPlaceholder}
+                                        hideRules={true}
+                                        initialSpacing={20}
+                                        spacing={dinamicSpacing}
+                                        backgroundColor={"transparent"}
+                                        scrollAnimation={true}
+                                    />
                                 </View>
                             )}
 
@@ -142,26 +204,49 @@ export const AnalyticsScreen = ({route}) => {
                                     </Text>
                                 </View>
                             ) : (
-                                <View style={{width:'100%'}}>
-                                    {timesList.map((time) => (
-                                        <View key={time.id} style={styles.timersListStyle}>
-                                            <View style={{flex: 2, gap: 5}}>
-                                                <Text style={styles.labelTimeList}>Tempo</Text>
-                                                <Text style={globalStyles.normalText}>{time.time_cs}</Text>
+                                <View style={{width: '100%'}}>
+                                    {timesList.map((time, index) => (
+                                        index > 0 ? (
+                                            <View key={time.id} style={styles.timersListStyle}>
+                                                <View style={{flex: 2, gap: 5}}>
+                                                    <Text style={globalStyles.normalText}>{time.time_cs}</Text>
+                                                </View>
+                                                <View style={{flex: 4, gap: 5, flexShrink: 1}}>
+                                                    <Text style={globalStyles.normalText}>
+                                                        {getScramble(time.scramble)}
+                                                    </Text>
+                                                </View>
+                                                <View style={{flex: 1, alignItems: 'flex-end', alignSelf: 'center'}}>
+                                                    <TouchableOpacity onPress={() => {
+                                                        setModalVisible(true)
+                                                        setIdToDelete(time.id)
+                                                    }}>
+                                                        <Feather name="trash-2" size={24} color={colors.cardsAndMenus}/>
+                                                    </TouchableOpacity>
+                                                </View>
                                             </View>
-                                            <View style={{flex: 4, gap: 5, flexShrink: 1}}>
-                                                <Text style={styles.labelTimeList}>Scramble</Text>
-                                                <Text style={globalStyles.normalText}>{getScramble(time.scramble)}</Text>
+                                        ) : (
+                                            <View key={time.id} style={styles.timersListStyle}>
+                                                <View style={{flex: 2, gap: 5}}>
+                                                    <Text style={styles.labelTimeList}>Tempo</Text>
+                                                    <Text style={globalStyles.normalText}>{time.time_cs}</Text>
+                                                </View>
+                                                <View style={{flex: 4, gap: 5, flexShrink: 1}}>
+                                                    <Text style={styles.labelTimeList}>Scramble</Text>
+                                                    <Text style={globalStyles.normalText}>
+                                                        {getScramble(time.scramble)}
+                                                    </Text>
+                                                </View>
+                                                <View style={{flex: 1, alignItems: 'flex-end', alignSelf: 'center'}}>
+                                                    <TouchableOpacity onPress={() => {
+                                                        setModalVisible(true)
+                                                        setIdToDelete(time.id)
+                                                    }}>
+                                                        <Feather name="trash-2" size={24} color={colors.cardsAndMenus}/>
+                                                    </TouchableOpacity>
+                                                </View>
                                             </View>
-                                            <View style={{flex: 1, alignItems: 'flex-end', alignSelf: 'center'}}>
-                                                <TouchableOpacity onPress={() => {
-                                                    setModalVisible(true)
-                                                    setIdToDelete(time.id)
-                                                }}>
-                                                    <Feather name="trash-2" size={24} color={colors.cardsAndMenus} />
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>
+                                        )
                                     ))}
                                 </View>
                             )}
@@ -171,15 +256,19 @@ export const AnalyticsScreen = ({route}) => {
                             >
                                 <View style={styles.modalOverlay}>
                                     <View style={styles.modalBox}>
-                                        <Text style={styles.modalTitle}>Você tem certeza que deseja deletar o tempo?</Text>
+                                        <Text style={styles.modalTitle}>Você tem certeza que deseja deletar o
+                                            tempo?</Text>
 
                                         <View style={{flexDirection: 'row', gap: 10}}>
                                             <TouchableOpacity style={[styles.button, styles.cancelButton]}
                                                               onPress={() => setModalVisible(false)}>
-                                                <Text style={[{fontWeight: 'bold'}, globalStyles.normalText]}>Cancelar</Text>
+                                                <Text
+                                                    style={[{fontWeight: 'bold'}, globalStyles.normalText]}>Cancelar</Text>
                                             </TouchableOpacity>
-                                            <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={deleteTime}>
-                                                <Text style={[{fontWeight: 'bold'}, globalStyles.normalText]}>Deletar</Text>
+                                            <TouchableOpacity style={[styles.button, styles.deleteButton]}
+                                                              onPress={deleteTime}>
+                                                <Text
+                                                    style={[{fontWeight: 'bold'}, globalStyles.normalText]}>Deletar</Text>
                                             </TouchableOpacity>
                                         </View>
                                     </View>
