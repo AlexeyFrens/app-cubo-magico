@@ -183,8 +183,8 @@ export default function App() {
 
     if (!fontsLoaded) {
         return (
-            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#313131'}}>
-                <ActivityIndicator size="large" color="#2962FF"/>
+            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.cardsAndMenus}}>
+                <ActivityIndicator size="large" color="white"/>
             </View>
         );
     }
