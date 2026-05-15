@@ -35,7 +35,6 @@ export const LoginScreen = () => {
 
         try {
             await authService.signIn(email, password)
-            navigation.reset({index: 0, routes: [{name: 'home'}]})
         } catch (error) {
             showAlert("Erro ao acessar", "Email ou senha incorretos.")
         } finally {

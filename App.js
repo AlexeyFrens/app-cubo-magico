@@ -11,18 +11,19 @@ import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {StopwatchScreen} from "./src/screens/StopwatchScreen";
 import {AnalyticsScreen} from "./src/screens/AnalyticsScreen";
 import {AulaTemplateScreen} from "./src/screens/AulaTemplateScreen";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {authService} from "./src/services/authService";
 import {AlertProvider, useAlert} from "./src/contexts/AlertContext";
 import {RecoveryScreen} from "./src/screens/RecoveryScreen";
 import {historicalTimeService} from "./src/services/historicalTimeService";
+import {supabase} from "./src/services/supabaseConnection";
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
 
 const FakeComponent = () => (<View></View>)
 
-const HomeTabNavigator = ({navigation}) => {
+const HomeTabNavigator = () => {
 
     const [isModalVisible, setModalVisible] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -32,7 +33,6 @@ const HomeTabNavigator = ({navigation}) => {
         try {
             await authService.signOut()
             setModalVisible(false)
-            navigation.reset({index: 0, routes: [{name: "login"}]})
         } catch (error) {
             showAlert("Erro ao sair", error.message)
         }
@@ -42,8 +42,8 @@ const HomeTabNavigator = ({navigation}) => {
         setIsLoading(true)
 
         try {
-             return await historicalTimeService.searchHistorialTimes()
-        } catch(error) {
+            return await historicalTimeService.searchHistorialTimes()
+        } catch (error) {
             showAlert("Erro", error.message)
         } finally {
             setIsLoading(false)
@@ -167,6 +167,20 @@ export default function App() {
         Lato_700Bold
     })
 
+    const [session, setSession] = useState(null)
+
+    useEffect(() => {
+        supabase.auth.getSession().then(({data: {session}}) => {
+            setSession(session)
+        })
+
+        const {data: {subscription}} = supabase.auth.onAuthStateChange((_event, session) => {
+            setSession(session)
+        })
+
+        return () => subscription.unsubscribe()
+    }, []);
+
     if (!fontsLoaded) {
         return (
             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#313131'}}>
@@ -179,15 +193,26 @@ export default function App() {
         <AlertProvider>
             <NavigationContainer>
                 <Stack.Navigator screenOptions={{headerShown: false}}>
-                    <Stack.Screen name={"login"} component={LoginScreen}/>
-                    <Stack.Screen name={"signUp"} component={SignUpScreen}/>
-                    <Stack.Screen name={"recovery"} component={RecoveryScreen}/>
-                    <Stack.Screen name={"home"} component={HomeTabNavigator}/>
-                    <Stack.Screen name={"aulaScreen"} component={AulaTemplateScreen}/>
+
+                    {session && session.user ? (
+                        <>
+                            <Stack.Screen name={"home"} component={HomeTabNavigator}/>
+                            <Stack.Screen name={"aulaScreen"} component={AulaTemplateScreen}/>
+                        </>
+                    ) : (
+                        <>
+                            <Stack.Screen name={"login"} component={LoginScreen}/>
+                            <Stack.Screen name={"signUp"} component={SignUpScreen}/>
+                            <Stack.Screen name={"recovery"} component={RecoveryScreen}/>
+                        </>
+                    )
+                    }
+
                 </Stack.Navigator>
             </NavigationContainer>
         </AlertProvider>
-    );
+    )
+        ;
 }
 
 const styles = StyleSheet.create({
