@@ -131,8 +131,9 @@ const styles = StyleSheet.create({
         gap: 10
     },
     classCardTitle: {
-        ...globalStyles.normalText,
-        fontWeight: 'bold',
+        fontFamily: customFont.bold,
+        color: colors.text,
+        fontSize: customFont.sizes.small
     },
     classScrambleContainer: {
        ...globalStyles.classScrambleContainer
