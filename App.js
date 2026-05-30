@@ -3,6 +3,7 @@ import {NavigationContainer} from "@react-navigation/native";
 import {LoginScreen} from "./src/screens/LoginScreen";
 import {SignUpScreen} from "./src/screens/SignUpScreen";
 import {HomeScreen} from "./src/screens/HomeScreen";
+import {BasicMethodScreen} from "./src/screens/BasicMethodScreen";
 import {Lato_400Regular, Lato_700Bold, useFonts} from '@expo-google-fonts/lato'
 import {ActivityIndicator, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
@@ -198,6 +199,7 @@ export default function App() {
                         <>
                             <Stack.Screen name={"home"} component={HomeTabNavigator}/>
                             <Stack.Screen name={"aulaScreen"} component={AulaTemplateScreen}/>
+                            <Stack.Screen name={"basicMethodScreen"} component={BasicMethodScreen}/>
                         </>
                     ) : (
                         <>
