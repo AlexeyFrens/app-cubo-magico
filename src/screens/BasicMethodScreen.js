@@ -57,11 +57,60 @@ export const BasicMethodScreen = () => {
                     <ScrollView contentContainerStyle={{gap: 20, paddingBottom: 8}}
                                 showsVerticalScrollIndicator={false}>
                         <ClassButtonNavigator
-                            classImage={images.cubePieces}
-                            actionNav={() => openClass(0)}
+                            classImage={images.prepareTheCross}
+                            actionNav={() => openClass(3)}
                             buttonColor={colors.categoryCubePieces}
-                            title={"Peças do Cubo"}
-                            subtitle={"Conheça os 3 tipos de peças que formam um Cubo Mágico tradicional."}
+                            title={"Preparar a Cruz"}
+                            subtitle={"Este é um passo totalmente intuitivo, ou seja, não possui fórmulas específicas pra cada situação. Você deve fazer a preparação da cruz da maneira que achar melhor."}
+                        />
+                        <ClassButtonNavigator
+                            classImage={images.finishCross}
+                            actionNav={() => openClass(4)}
+                            buttonColor={colors.categoryBeginner}
+                            title={"Finalizar a Cruz"}
+                            subtitle={"O passo mais simples de todos! Basta alinhar as cores e descer os meios brancos para a base do cubo."}
+                        />
+                        <ClassButtonNavigator
+                            classImage={images.firstLayer}
+                            actionNav={() => openClass(5)}
+                            buttonColor={colors.categoryIntermediary}
+                            title={"Primeira Camada"}
+                            subtitle={"Agora nós vamos finalizar toda a camada branca, ou seja, montar as 4 quinas brancas na base do cubo."}
+                        />
+                        <ClassButtonNavigator
+                            classImage={images.secondLayer}
+                            actionNav={() => openClass(6)}
+                            buttonColor={colors.categoryAdvanced}
+                            title={"Segunda Camada"}
+                            subtitle={"Neste passo nós iremos finalizar a camada do meio do cubo utilizando apenas 2 fórmulas."}
+                        />
+                        <ClassButtonNavigator
+                            classImage={images.yellowCross}
+                            actionNav={() => openClass(7)}
+                            buttonColor={colors.categoryCubePieces}
+                            title={"Cruz Amarela"}
+                            subtitle={"Neste passo você deve utilizar a mesma fórmula alterando apenas a posição do cubo para criar uma cruz amarela no topo."}
+                        />
+                        <ClassButtonNavigator
+                            classImage={images.yellowFace}
+                            actionNav={() => openClass(8)}
+                            buttonColor={colors.categoryBeginner}
+                            title={"Face Amarela"}
+                            subtitle={"Neste passo você deve utilizar a mesma fórmula, que chamamos de SUNE, alterando apenas a posição do cubo para preencher toda a face amarela no topo."}
+                        />
+                        <ClassButtonNavigator
+                            classImage={images.finishCorners}
+                            actionNav={() => openClass(9)}
+                            buttonColor={colors.categoryIntermediary}
+                            title={"Finalizar as Quinas"}
+                            subtitle={"Agora nós iremos finalizar todas as quinas da última camada utilizando apenas 1 fórmula."}
+                        />
+                        <ClassButtonNavigator
+                            classImage={images.finishTheMiddle}
+                            actionNav={() => openClass(10)}
+                            buttonColor={colors.categoryAdvanced}
+                            title={"Finalizar os Meios"}
+                            subtitle={"O objetivo agora é finalizar os meios da última camada utilizando 1 fórmula com 2 variações. Basta posicionar a face correta nas costas do cubo e identificar se o seu cubo é o caso horário ou anti-horário."}
                         />
                     </ScrollView>
 
