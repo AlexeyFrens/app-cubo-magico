@@ -22,7 +22,7 @@ export const HomeScreen = () => {
             const supabaseData = await classService.searchStapsByTrail(idTrilha)
 
             if (!supabaseData || supabaseData.length === 0) {
-                showAlert("Nenhuma aula encontrada para esta trilha no momento.")
+                showAlert("Alerta", "Nenhuma aula encontrada para esta trilha no momento.")
                 return
             }
 
@@ -37,7 +37,7 @@ export const HomeScreen = () => {
 
             navigator.navigate('aulaScreen', {etapas: supabaseData})
         } catch (error) {
-            showAlert("Erro ao carregar o conteúdo. Verifique sua conexão")
+            showAlert("Erro", "Erro ao carregar o conteúdo. Verifique sua conexão")
         } finally {
             setIsLoading(false)
         }
@@ -83,14 +83,14 @@ export const HomeScreen = () => {
                         />
                     </ScrollView>
 
-                    <Modal transparent={true} visible={isLoading} animationType={"fade"}>
-                        <View style={styles.loadingOverlay}>
+                    {isLoading && (
+                        <View style={[StyleSheet.absoluteFillObject, styles.loadingOverlay, {zIndex: 999, elevation: 10}]}>
                             <View style={styles.loadingBox}>
                                 <ActivityIndicator size="large" color={colors.primary}/>
                                 <Text style={styles.loadingText}>Preparando aula...</Text>
                             </View>
                         </View>
-                    </Modal>
+                    )}
                 </SafeAreaView>
             </SafeAreaProvider>
         </>
