@@ -121,7 +121,7 @@ export const RecoveryScreen = () => {
 
                                     {codigoEnviado === true && (
                                         <Text style={globalStyles.normalText}>
-                                            Digite o código de 6 dígitos recebido no email no input de texto abaixo para
+                                            Digite o código de 8 dígitos recebido no email no input de texto abaixo para
                                             recuperar a sua senha.
                                         </Text>
                                     )}
